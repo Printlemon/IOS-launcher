@@ -18,13 +18,17 @@ jobs:
           java-version: 17
 
       - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-34 build-tools;34.0.0'
+
+      - name: Fix gradlew line endings and permissions
+        run: |
+              sed -i -e 's/\r$//' gradlew
+              chmod +x gradlew
 
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 8.11.1
-
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
 
       - name: Build debug APK
         run: ./gradlew assembleDebug --no-daemon
